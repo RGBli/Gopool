@@ -17,7 +17,6 @@ func NewPoolLazyWorker(size int64) *Pool {
 		workCh: make(chan func()),
 		semCh:  make(chan struct{}, size),
 	}
-
 	return p
 }
 
@@ -36,7 +35,6 @@ func NewPoolHungryWorker(size, preload int64) *Pool {
 		p.semCh <- struct{}{}
 		go p.worker(func() {})
 	}
-
 	return p
 }
 
@@ -53,10 +51,10 @@ func (p *Pool) schedule(task func(), timeout <-chan time.Time) error {
 	case <-timeout:
 		return ErrScheduleTimeout
 	case p.workCh <- task:
+		fmt.Println("another task comes in work channel")
 	case p.semCh <- struct{}{}:
 		go p.worker(task)
 	}
-
 	return nil
 }
 

@@ -14,7 +14,7 @@ fmt.Println("done")
 
 hungry load pool
 ```go
-p := NewPoolLazyWorker(1024, 512)
+p := NewPoolHungryWorker(1024, 512)
 p.Schedule(func() {
     fmt.Println("hello go pool")
 })
